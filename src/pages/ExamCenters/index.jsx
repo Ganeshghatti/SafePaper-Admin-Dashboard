@@ -3,6 +3,7 @@ import { Box, Button, Typography, Alert, CircularProgress } from '@mui/material'
 import { getUsers, createUser, deleteUser } from '../../services/userService';
 import ExamCenterTable from './components/ExamCenterTable';
 import AddExamCenterDialog from './components/AddExamCenterDialog';
+import { showToast } from '../../utils/toast';
 
 export default function ExamCenters() {
   const [examCenters, setExamCenters] = useState([]);
@@ -18,6 +19,7 @@ export default function ExamCenters() {
       setExamCenters(response.data);
     } catch (err) {
       setError(err.message || 'Failed to load exam centers');
+      showToast.error(err.message || 'Failed to load exam centers');
     } finally {
       setLoading(false);
     }
@@ -34,10 +36,12 @@ export default function ExamCenters() {
         ...formData,
         role: 'exam-center'
       });
+      showToast.success('Exam center created successfully');
       setOpenDialog(false);
       loadExamCenters();
     } catch (err) {
       setError(err.message || 'Failed to create exam center');
+      showToast.error(err.message || 'Failed to create exam center');
     }
   };
 
@@ -46,9 +50,11 @@ export default function ExamCenters() {
       try {
         setError(null);
         await deleteUser(userId);
+        showToast.success('Exam center deleted successfully');
         loadExamCenters();
       } catch (err) {
         setError(err.message || 'Failed to delete exam center');
+        showToast.error(err.message || 'Failed to delete exam center');
       }
     }
   };

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import Sidebar from './Sidebar';
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -32,11 +32,11 @@ export default function DashboardLayout({ children }) {
         sx={{
           flexGrow: 1,
           p: 3,
-          mt: '64px', // Height of AppBar
-          ml: '240px', // Width of Sidebar
+          mt: '64px',
+          ml: '240px',
         }}
       >
-        {children}
+        <Outlet />
       </Box>
     </Box>
   );

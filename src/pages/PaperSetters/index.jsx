@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, Alert, CircularProgress } from '@mui/material';
 import { getUsers, createUser, deleteUser } from '../../services/userService';
 import PaperSetterTable from './components/PaperSetterTable';
-import AddPaperSetterDialog from './components/AddPaperSetterDialog'
+import AddPaperSetterDialog from './components/AddPaperSetterDialog';
 
 export default function PaperSetters() {
   const [paperSetters, setPaperSetters] = useState([]);

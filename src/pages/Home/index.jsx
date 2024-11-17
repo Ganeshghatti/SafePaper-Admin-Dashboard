@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { loginStart, loginSuccess, loginFailure } from '../../store/slices/authSlice';
 import { login } from '../../services/authService';
+import { showToast } from '../../utils/toast';
 
 export default function Home() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -24,17 +25,16 @@ export default function Home() {
     try {
       dispatch(loginStart());
       const response = await login(formData);
-      console.log('Login Response:', response); // Debug log
-      
       if (response.token) {
         dispatch(loginSuccess(response.token));
+        showToast.success('Login successful');
         navigate('/dashboard');
       } else {
         throw new Error('No token received');
       }
     } catch (err) {
-      console.error('Login Error:', err); // Debug log
       dispatch(loginFailure(err.message || 'Login failed'));
+      showToast.error(err.message || 'Login failed');
     }
   };
 

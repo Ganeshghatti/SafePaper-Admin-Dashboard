@@ -3,12 +3,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { store } from './store/store';
 import DashboardLayout from './components/layout/DashboardLayout';
 import PrivateRoute from './components/PrivateRoute';
-import Home from './pages/Home/index';
-import Dashboard from './pages/Dashboard/index';
-import PaperSetters from './pages/PaperSetters/index';
-import Guardians from './pages/Guardians/index';
-import ExamCenters from './pages/ExamCenters/index';
-import './services/axiosConfig';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import PaperSetters from './pages/PaperSetters';
+import Guardians from './pages/Guardians';
+import ExamCenters from './pages/ExamCenters';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   return (
@@ -16,23 +17,27 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          
           <Route
-            path="/dashboard"
             element={
               <PrivateRoute>
-                <DashboardLayout>
-                  <Routes>
-                    <Route index element={<Dashboard />} />
-                    <Route path="/paper-setters" element={<PaperSetters />} />
-                    <Route path="/guardians" element={<Guardians />} />
-                    <Route path="/exam-centers" element={<ExamCenters />} />
-                  </Routes>
-                </DashboardLayout>
+                <DashboardLayout />
               </PrivateRoute>
             }
-          />
+          >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/paper-setters" element={<PaperSetters />} />
+            <Route path="/dashboard/guardians" element={<Guardians />} />
+            <Route path="/dashboard/exam-centers" element={<ExamCenters />} />
+          </Route>
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+        />
       </BrowserRouter>
     </Provider>
   );
