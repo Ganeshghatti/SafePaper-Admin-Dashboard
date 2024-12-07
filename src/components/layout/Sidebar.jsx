@@ -9,6 +9,7 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 const DRAWER_WIDTH = 240;
 
 const menuItems = [
+  { text: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
   { text: 'Paper Setters', path: '/dashboard/paper-setters', icon: <PersonIcon /> },
   { text: 'Guardians', path: '/dashboard/guardians', icon: <SchoolIcon /> },
   { text: 'Exam Centers', path: '/dashboard/exam-centers', icon: <LocationCityIcon /> },

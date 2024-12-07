@@ -38,19 +38,19 @@ export default function Dashboard() {
     {
       title: "Paper Setters",
       icon: <SchoolIcon sx={{ fontSize: 40 }} />,
-      path: "/paper-setters",
+      path: "/dashboard/paper-setters",
       description: "Manage paper setters and their submissions",
     },
     {
       title: "Guardians",
       icon: <SecurityIcon sx={{ fontSize: 40 }} />,
-      path: "/guardians",
+      path: "/dashboard/guardians",
       description: "Manage guardians for key sharing",
     },
     {
       title: "Exam Centers",
       icon: <PeopleIcon sx={{ fontSize: 40 }} />,
-      path: "/exam-centers",
+      path: "/dashboard/exam-centers",
       description: "Manage exam centers and their access",
     },
   ];
