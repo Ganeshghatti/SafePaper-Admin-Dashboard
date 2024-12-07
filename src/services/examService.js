@@ -1,36 +1,39 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL;
-
-const getAuthHeader = () => ({
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-});
+import axiosInstance from './axiosConfig';
 
 export const examService = {
-  scheduleExam: async (examData) => {
+  async scheduleExam(examData) {
     try {
-      const response = await axios.post(`${API_URL}/exams/schedule`, examData, getAuthHeader());
+      console.log('Scheduling exam:', examData);
+      const response = await axiosInstance.post('/exams/schedule', examData);
+      console.log('Exam scheduled successfully:', response.data);
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to schedule exam' };
+      console.error('Error scheduling exam:', error);
+      throw error;
     }
   },
 
-  getCurrentExam: async () => {
+  async getCurrentExam() {
     try {
-      const response = await axios.get(`${API_URL}/exams/current`, getAuthHeader());
+      console.log('Fetching current exam');
+      const response = await axiosInstance.get('/exams/current');
+      console.log('Current exam fetched successfully:', response.data);
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to fetch current exam' };
+      console.error('Error fetching current exam:', error);
+      throw error;
     }
   },
 
-  deleteExam: async (examId) => {
+  async deleteExam(examId) {
     try {
-      const response = await axios.delete(`${API_URL}/exams/${examId}`, getAuthHeader());
+      console.log('Deleting exam:', examId);
+      const response = await axiosInstance.delete(`/exams/${examId}`);
+      console.log('Exam deleted successfully:', response.data);
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to delete exam' };
+      console.error('Error deleting exam:', error);
+      throw error;
     }
   }
 }; 
