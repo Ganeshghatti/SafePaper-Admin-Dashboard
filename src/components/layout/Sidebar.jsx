@@ -1,51 +1,135 @@
 import React from 'react';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
+import SecurityIcon from '@mui/icons-material/Security';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 
-const DRAWER_WIDTH = 240;
+const drawerWidth = 280;
 
-const menuItems = [
-  { text: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
-  { text: 'Paper Setters', path: '/dashboard/paper-setters', icon: <PersonIcon /> },
-  { text: 'Guardians', path: '/dashboard/guardians', icon: <SchoolIcon /> },
-  { text: 'Exam Centers', path: '/dashboard/exam-centers', icon: <LocationCityIcon /> },
-];
-
-export default function Sidebar() {
-  const navigate = useNavigate();
+export default function Sidebar({ mobileOpen, onDrawerToggle }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const menuItems = [
+    { path: '/dashboard', icon: <DashboardIcon />, text: 'Dashboard' },
+    { path: '/dashboard/paper-setters', icon: <SchoolIcon />, text: 'Paper Setters' },
+    { path: '/dashboard/guardians', icon: <SecurityIcon />, text: 'Guardians' },
+    { path: '/dashboard/exam-centers', icon: <LocationCityIcon />, text: 'Exam Centers' },
+  ];
+
+  const drawer = (
+    <>
+      <Box 
+        sx={{ 
+          p: 3, 
+          borderBottom: '1px solid #dedcff',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        <img 
+          src="./logo.png" 
+          alt="SafePaper Logo" 
+          style={{ height: '32px' }}
+        />
+      </Box>
+      <List sx={{ p: 2 }}>
+        {menuItems.map((item) => (
+          <ListItem
+            key={item.path}
+            onClick={() => navigate(item.path)}
+            sx={{
+              borderRadius: '8px',
+              mb: 1,
+              backgroundColor: location.pathname === item.path ? '#f8f8ff' : 'transparent',
+              color: location.pathname === item.path ? '#2f27ce' : '#666',
+              '&:hover': {
+                backgroundColor: '#f8f8ff',
+                color: '#2f27ce',
+              },
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                color: 'inherit',
+                minWidth: 40,
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText 
+              primary={item.text} 
+              primaryTypographyProps={{
+                fontFamily: 'Poppins',
+                fontWeight: location.pathname === item.path ? 600 : 400,
+              }}
+            />
+          </ListItem>
+        ))}
+      </List>
+    </>
+  );
 
   return (
-    <Drawer
-      variant="permanent"
+    <Box
+      component="nav"
       sx={{
-        width: DRAWER_WIDTH,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: DRAWER_WIDTH,
-          boxSizing: 'border-box',
-        },
+        width: { md: drawerWidth },
+        flexShrink: { md: 0 },
       }}
     >
-      <Box sx={{ overflow: 'auto', mt: 8 }}>
-        <List>
-          {menuItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                selected={location.pathname === item.path}
-                onClick={() => navigate(item.path)}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Drawer>
+      {isMobile ? (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={onDrawerToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              backgroundColor: '#fff',
+              border: 'none',
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      ) : (
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              backgroundColor: '#fff',
+              border: 'none',
+              borderRight: '1px solid #dedcff',
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      )}
+    </Box>
   );
 }

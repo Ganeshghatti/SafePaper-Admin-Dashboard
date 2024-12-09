@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Box,
-  Typography,
-  Grid,
-  Paper,
   Button,
   Dialog,
   DialogTitle,
@@ -12,7 +8,6 @@ import {
   DialogActions,
   TextField,
   Alert,
-  IconButton,
   CircularProgress,
 } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
@@ -37,19 +32,19 @@ export default function Dashboard() {
   const cards = [
     {
       title: "Paper Setters",
-      icon: <SchoolIcon sx={{ fontSize: 40 }} />,
+      icon: <SchoolIcon sx={{ fontSize: 40, color: '#433bff' }} />,
       path: "/dashboard/paper-setters",
       description: "Manage paper setters and their submissions",
     },
     {
       title: "Guardians",
-      icon: <SecurityIcon sx={{ fontSize: 40 }} />,
+      icon: <SecurityIcon sx={{ fontSize: 40, color: '#433bff' }} />,
       path: "/dashboard/guardians",
       description: "Manage guardians for key sharing",
     },
     {
       title: "Exam Centers",
-      icon: <PeopleIcon sx={{ fontSize: 40 }} />,
+      icon: <PeopleIcon sx={{ fontSize: 40, color: '#433bff' }} />,
       path: "/dashboard/exam-centers",
       description: "Manage exam centers and their access",
     },
@@ -89,20 +84,17 @@ export default function Dashboard() {
     const [startHour, startMinute] = formData.startTime.split(":");
     const [endHour, endMinute] = formData.endTime.split(":");
 
-    // Create date objects for start and end times
     const examStartDate = new Date(selectedDate);
     examStartDate.setHours(parseInt(startHour), parseInt(startMinute));
 
     const examEndDate = new Date(selectedDate);
     examEndDate.setHours(parseInt(endHour), parseInt(endMinute));
 
-    // Check if exam start time is in future
     if (examStartDate <= currentDate) {
       setError("Exam start time must be in the future");
       return false;
     }
 
-    // Check if end time is after start time
     if (examEndDate <= examStartDate) {
       setError("End time must be after start time");
       return false;
@@ -130,96 +122,80 @@ export default function Dashboard() {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
+    <div className="p-8 bg-background min-h-screen">
+      <h1 className="text-4xl font-space-grotesk text-primary font-bold mb-8">
         Admin Dashboard
-      </Typography>
+      </h1>
 
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {cards.map((card) => (
-          <Grid item xs={12} sm={6} md={4} key={card.title}>
-            <Paper
-              sx={{
-                p: 3,
-                textAlign: "center",
-                cursor: "pointer",
-                "&:hover": { bgcolor: "action.hover" },
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-              onClick={() => navigate(card.path)}
-            >
-              {card.icon}
-              <Typography variant="h6" sx={{ mt: 2 }}>
-                {card.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                {card.description}
-              </Typography>
-            </Paper>
-          </Grid>
+          <div
+            key={card.title}
+            className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border border-secondary hover:border-primary"
+            onClick={() => navigate(card.path)}
+          >
+            <div className="text-accent text-3xl mb-4">{card.icon}</div>
+            <h2 className="text-3xl font-space-grotesk text-text font-bold mb-2">
+              {card.value}
+            </h2>
+            <p className="text-sm text-gray-600 font-poppins mb-1">{card.title}</p>
+            <p className="text-xs text-accent font-medium">{card.description}</p>
+          </div>
         ))}
-      </Grid>
+      </div>
 
-      <Paper sx={{ p: 3 }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h6">Exam Management</Typography>
+      <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-space-grotesk text-primary font-bold">
+            Exam Management
+          </h2>
           {!currentExam && (
             <Button
               variant="contained"
               startIcon={<EventIcon />}
+              sx={{
+                backgroundColor: '#2f27ce',
+                '&:hover': {
+                  backgroundColor: '#433bff',
+                },
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontFamily: 'Poppins',
+                fontWeight: 500,
+                padding: '8px 20px',
+              }}
               onClick={() => setOpenDialog(true)}
             >
               Schedule New Exam
             </Button>
           )}
-        </Box>
-      </Paper>
-
-      {loadingExam ? (
-        <CircularProgress size={24} />
-      ) : currentExam ? (
-        <Box sx={{ mb: 3, mt: 3 }}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Current Exam
-            </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box>
-                <Typography>
-                  Date: {new Date(currentExam.date).toLocaleDateString()}
-                </Typography>
-                <Typography>
-                  Time: {currentExam.startTime} - {currentExam.endTime}
-                </Typography>
-                <Typography>Status: {currentExam.status}</Typography>
-              </Box>
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={handleDeleteExam}
-                disabled={currentExam.status === "in-progress"}
-              >
-                Delete Exam
-              </Button>
-            </Box>
-          </Paper>
-        </Box>
-      ) : null}
+        </div>
+        {loadingExam ? (
+          <CircularProgress size={24} />
+        ) : currentExam ? (
+          <div className="mb-3 mt-3">
+            <div className="bg-white rounded-lg shadow-lg p-4">
+              <h2 className="text-lg font-space-grotesk text-text mb-2">Current Exam</h2>
+              <div className="flex justify-between items-center flex-col md:flex-row">
+                <div className="flex flex-col gap-2 w-full mb-8 md:mb-0">
+                  <p>Date: {new Date(currentExam.date).toLocaleDateString()}</p>
+                  <p>Time: {currentExam.startTime} - {currentExam.endTime}</p>
+                  <p>Status: {currentExam.status}</p>
+                </div>
+                <Button
+                  variant="outlined"
+                  onClick={handleDeleteExam}
+                  disabled={currentExam.status === "in-progress"}
+                  className="w-full md:w-auto hover:bg-red-500 hover:text-white"
+                  sx={{ borderColor: 'red', color: 'red' }}
+                >
+                  Delete Exam
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </div>
 
       <Dialog
         open={openDialog}
@@ -235,9 +211,7 @@ export default function Dashboard() {
                 {error}
               </Alert>
             )}
-            <Box
-              sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2 }}
-            >
+            <div className="flex flex-col gap-2 mt-2">
               <TextField
                 type="date"
                 label="Exam Date"
@@ -268,16 +242,16 @@ export default function Dashboard() {
                 }
                 required
               />
-            </Box>
+            </div>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" className="bg-primary text-white hover:bg-accent">
               Schedule Exam
             </Button>
           </DialogActions>
         </form>
       </Dialog>
-    </Box>
+    </div>
   );
 }

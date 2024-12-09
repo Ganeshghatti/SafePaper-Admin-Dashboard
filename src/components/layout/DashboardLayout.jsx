@@ -1,39 +1,32 @@
-import React from 'react';
-import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { useNavigate, Outlet } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../store/slices/authSlice';
+import React, { useState } from 'react';
+import { Box, useTheme, useMediaQuery } from '@mui/material';
+import { Outlet } from 'react-router-dom';
+import Header from './Header';
 import Sidebar from './Sidebar';
 
 export default function DashboardLayout() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/');
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            SafePaper Admin
-          </Typography>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Sidebar />
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#fbfbfe' }}>
+      <Header onSidebarToggle={handleDrawerToggle} />
+      <Sidebar mobileOpen={mobileOpen} onDrawerToggle={handleDrawerToggle} />
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          mt: '64px',
-          ml: '240px',
+          pt: { xs: 8, sm: 9 },
+          width: { md: `calc(100% - ${280}px)` },
+          transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
         }}
       >
         <Outlet />

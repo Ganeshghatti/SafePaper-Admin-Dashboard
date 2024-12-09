@@ -4,6 +4,8 @@ import { getUsers, createUser, deleteUser } from '../../services/userService';
 import ExamCenterTable from './components/ExamCenterTable';
 import AddExamCenterDialog from './components/AddExamCenterDialog';
 import { showToast } from '../../utils/toast';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 export default function ExamCenters() {
   const [examCenters, setExamCenters] = useState([]);
@@ -60,29 +62,68 @@ export default function ExamCenters() {
   };
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h5">Exam Centers</Typography>
-        <Button variant="contained" onClick={() => setOpenDialog(true)}>
+    <div className="p-8">
+      <div className="flex justify-between items-center mb-8">
+        <div className='mb-4 md:mb-0'>
+          <h1 className="text-3xl font-space-grotesk font-bold text-primary mb-2">
+            Exam Centers
+          </h1>
+          <p className="text-sm text-gray-600 font-poppins">
+            Manage examination venues and locations
+          </p>
+        </div>
+        <Button
+          variant="contained"
+          startIcon={<LocationCityIcon />}
+          onClick={() => setOpenDialog(true)}
+          sx={{
+            backgroundColor: '#2f27ce',
+            '&:hover': {
+              backgroundColor: '#433bff',
+            },
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontFamily: 'Poppins',
+            fontWeight: 500,
+            padding: '8px 20px',
+          }}
+        >
           Add Exam Center
         </Button>
-      </Box>
+      </div>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert 
+          severity="error" 
+          sx={{ 
+            mb: 4,
+            borderRadius: '8px',
+            '& .MuiAlert-icon': {
+              color: '#ff4444'
+            }
+          }}
+        >
           {error}
         </Alert>
       )}
 
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-          <CircularProgress />
-        </Box>
+        <div className="flex justify-center items-center h-64">
+          <CircularProgress sx={{ color: '#2f27ce' }} />
+        </div>
       ) : (
-        <ExamCenterTable 
-          examCenters={examCenters} 
-          onDelete={handleDelete} 
-        />
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary">
+          <div className="flex items-center gap-3 mb-6">
+            <LocationOnIcon sx={{ color: '#2f27ce', fontSize: 24 }} />
+            <h2 className="text-xl font-space-grotesk font-semibold text-text">
+              Registered Centers
+            </h2>
+          </div>
+          <ExamCenterTable 
+            examCenters={examCenters} 
+            onDelete={handleDelete} 
+          />
+        </div>
       )}
 
       <AddExamCenterDialog
@@ -90,6 +131,6 @@ export default function ExamCenters() {
         onClose={() => setOpenDialog(false)}
         onSubmit={handleCreate}
       />
-    </Box>
+    </div>
   );
 }
