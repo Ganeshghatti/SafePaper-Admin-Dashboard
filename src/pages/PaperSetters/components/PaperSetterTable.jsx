@@ -108,7 +108,7 @@ export default function PaperSetterTable({ paperSetters, onDelete }) {
                     {setter.name.charAt(0)}
                   </Avatar>
                   <div>
-                    <div className="font-space-grotesk font-semibold text-text">
+                    <div className="font-space-grotesk font-semibold text-textcolor">
                       {setter.name}
                     </div>
                     <Chip

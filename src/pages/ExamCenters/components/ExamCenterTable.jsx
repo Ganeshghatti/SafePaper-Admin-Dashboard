@@ -109,7 +109,7 @@ export default function ExamCenterTable({ examCenters, onDelete }) {
                     <LocationOnIcon />
                   </Avatar>
                   <div>
-                    <div className="font-space-grotesk font-semibold text-text">
+                    <div className="font-space-grotesk font-semibold text-textcolor">
                       {center.name}
                     </div>
                     <Chip

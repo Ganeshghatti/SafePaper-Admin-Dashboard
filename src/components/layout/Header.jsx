@@ -7,19 +7,14 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Typography,
   useTheme,
   useMediaQuery,
-  Divider,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import MenuIcon from '@mui/icons-material/Menu';
-import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function Header({ onSidebarToggle }) {
   const theme = useTheme();
@@ -50,7 +45,8 @@ export default function Header({ onSidebarToggle }) {
         zIndex: theme.zIndex.drawer + 1,
         backgroundColor: '#fff',
         boxShadow: 'none',
-        borderBottom: '1px solid #dedcff'
+        borderBottom: '1px solid #dedcff',
+        zIndex: isMobile ? theme.zIndex.drawer + 1 : 1,
       }}
     >
       <Toolbar sx={{ justifyContent: 'space-between', height: 70 }}>
@@ -68,17 +64,7 @@ export default function Header({ onSidebarToggle }) {
           )}
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <IconButton
-            sx={{ 
-              color: '#666',
-              backgroundColor: '#f8f8ff',
-              '&:hover': { backgroundColor: '#dedcff' }
-            }}
-          >
-            <NotificationsIcon />
-          </IconButton>
-
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton
             onClick={handleMenu}
             sx={{ 
@@ -100,7 +86,6 @@ export default function Header({ onSidebarToggle }) {
               {user?.email?.charAt(0).toUpperCase()}
             </Avatar>
           </IconButton>
-
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -123,54 +108,6 @@ export default function Header({ onSidebarToggle }) {
               }
             }}
           >
-            <Box sx={{ px: 2, py: 1.5 }}>
-              <Typography 
-                variant="subtitle1" 
-                sx={{ 
-                  fontFamily: 'Space Grotesk',
-                  fontWeight: 600,
-                  color: '#2f27ce'
-                }}
-              >
-                {user?.email}
-              </Typography>
-              <Typography 
-                variant="body2"
-                sx={{ 
-                  fontFamily: 'Poppins',
-                  color: '#666',
-                  fontSize: '0.75rem'
-                }}
-              >
-                Administrator
-              </Typography>
-            </Box>
-            <Divider sx={{ borderColor: '#dedcff' }} />
-            <MenuItem 
-              onClick={handleClose}
-              sx={{ 
-                py: 1.5,
-                px: 2,
-                fontFamily: 'Poppins',
-                gap: 1.5
-              }}
-            >
-              <PersonIcon sx={{ color: '#2f27ce' }} />
-              Profile
-            </MenuItem>
-            <MenuItem 
-              onClick={handleClose}
-              sx={{ 
-                py: 1.5,
-                px: 2,
-                fontFamily: 'Poppins',
-                gap: 1.5
-              }}
-            >
-              <SettingsIcon sx={{ color: '#2f27ce' }} />
-              Settings
-            </MenuItem>
-            <Divider sx={{ borderColor: '#dedcff' }} />
             <MenuItem 
               onClick={handleLogout}
               sx={{ 

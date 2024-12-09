@@ -16,6 +16,7 @@ import SecurityIcon from "@mui/icons-material/Security";
 import EventIcon from "@mui/icons-material/Event";
 import { examService } from "../../services/examService";
 import { showToast } from "../../utils/toast";
+import { Delete } from "@mui/icons-material";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -131,22 +132,19 @@ export default function Dashboard() {
         {cards.map((card) => (
           <div
             key={card.title}
-            className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border border-secondary hover:border-primary"
+            className="bg-secondary bg-opacity-30 rounded-xl shadow-sm p-6 hover:shadow-lg transition-all duration-300 cursor-pointer border border-secondary hover:border-primary"
             onClick={() => navigate(card.path)}
           >
             <div className="text-accent text-3xl mb-4">{card.icon}</div>
-            <h2 className="text-3xl font-space-grotesk text-text font-bold mb-2">
-              {card.value}
-            </h2>
-            <p className="text-sm text-gray-600 font-poppins mb-1">{card.title}</p>
-            <p className="text-xs text-accent font-medium">{card.description}</p>
+            <p className="text-xl md:text-2xl font-space-grotesk text-textcolor font-bold mb-2">{card.title}</p>
+            <p className="text-xs text-accent font-light">{card.description}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary">
+      <div className="bg-secondary bg-opacity-30 rounded-xl shadow-sm p-6 border border-secondary">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-space-grotesk text-primary font-bold">
+          <h2 className="text-xl md:text-2xl font-space-grotesk text-primary font-bold">
             Exam Management
           </h2>
           {!currentExam && (
@@ -174,8 +172,7 @@ export default function Dashboard() {
           <CircularProgress size={24} />
         ) : currentExam ? (
           <div className="mb-3 mt-3">
-            <div className="bg-white rounded-lg shadow-lg p-4">
-              <h2 className="text-lg font-space-grotesk text-text mb-2">Current Exam</h2>
+              <h2 className="text-lg font-space-grotesk text-textcolor mb-2">Current Exam</h2>
               <div className="flex justify-between items-center flex-col md:flex-row">
                 <div className="flex flex-col gap-2 w-full mb-8 md:mb-0">
                   <p>Date: {new Date(currentExam.date).toLocaleDateString()}</p>
@@ -186,13 +183,13 @@ export default function Dashboard() {
                   variant="outlined"
                   onClick={handleDeleteExam}
                   disabled={currentExam.status === "in-progress"}
-                  className="w-full md:w-auto hover:bg-red-500 hover:text-white"
+                  className="w-full md:w-auto hover:bg-red-500 hover:text-white flex items-center justify-center"
                   sx={{ borderColor: 'red', color: 'red' }}
                 >
-                  Delete Exam
+                  <Delete/>
+                  <span className="ml-2">Delete Exam</span>
                 </Button>
               </div>
-            </div>
           </div>
         ) : null}
       </div>

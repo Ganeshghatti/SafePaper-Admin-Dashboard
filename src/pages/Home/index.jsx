@@ -34,14 +34,14 @@ export default function Home() {
   return (
     <div className="bg-background min-h-screen flex items-center justify-center">
       <Container maxWidth="xs">
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="bg-secondary bg-opacity-30 rounded-lg shadow-lg p-6">
           <div className="flex items-center justify-center mb-4">
             <LockIcon className="text-primary" fontSize="large" />
           </div>
-          <h1 className="text-center text-2xl font-bold text-text mb-2 font-space-grotesk">
-            Welcome Back
+          <h1 className="text-center text-2xl font-bold text-textcolor mb-2 font-space-grotesk">
+            Welcome
           </h1>
-          <p className="text-center text-text mb-4 font-poppins">
+          <p className="text-center text-textcolor mb-4 font-poppins">
             Please login to your account
           </p>
 
@@ -64,7 +64,7 @@ export default function Home() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="bg-secondary text-text rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="bg-secondary text-textcolor rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <TextField
               margin="normal"
@@ -78,7 +78,7 @@ export default function Home() {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              className="bg-secondary text-text rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="bg-secondary text-textcolor rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <Button
               type="submit"

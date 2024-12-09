@@ -120,7 +120,7 @@ export default function GuardianTable({ guardians, onDelete }) {
                     {guardian.name.charAt(0)}
                   </Avatar>
                   <div>
-                    <div className="font-space-grotesk font-semibold text-text">
+                    <div className="font-space-grotesk font-semibold text-textcolor">
                       {guardian.name}
                     </div>
                     <div className="flex items-center gap-2 mt-1">
