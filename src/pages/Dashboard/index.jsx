@@ -143,7 +143,7 @@ export default function Dashboard() {
       </div>
 
       <div className="bg-secondary bg-opacity-30 rounded-xl shadow-sm p-6 border border-secondary">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 flex-col md:flex-row">
           <h2 className="text-xl md:text-2xl font-space-grotesk text-primary font-bold">
             Exam Management
           </h2>
@@ -163,6 +163,7 @@ export default function Dashboard() {
                 padding: '8px 20px',
               }}
               onClick={() => setOpenDialog(true)}
+              className="w-full md:w-auto"
             >
               Schedule New Exam
             </Button>

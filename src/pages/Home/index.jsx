@@ -84,7 +84,7 @@ export default function Home() {
               type="submit"
               fullWidth
               variant="contained"
-              className="mt-4 mb-2 bg-primary text-white hover:bg-accent transition duration-300 ease-in-out rounded-md shadow-md"
+              className="mt-4 mb-2 bg-accent text-white hover:bg-primary transition duration-300 ease-in-out rounded-md shadow-md"
               disabled={loading}
             >
               {loading ? "Logging in..." : "Login"}
