@@ -202,7 +202,9 @@ export default function Dashboard() {
         fullWidth
       >
         <form onSubmit={handleScheduleExam}>
-          <DialogTitle>Schedule New Exam</DialogTitle>
+          <DialogTitle sx={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#2f27ce' }}>
+            Schedule New Exam
+          </DialogTitle>
           <DialogContent>
             {error && (
               <Alert severity="error" sx={{ mb: 2 }}>
@@ -215,36 +217,78 @@ export default function Dashboard() {
                 label="Exam Date"
                 InputLabelProps={{ shrink: true }}
                 value={formData.date}
-                onChange={(e) =>
-                  setFormData({ ...formData, date: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                 required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px',
+                    '&:hover fieldset': {
+                      borderColor: '#2f27ce',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#2f27ce',
+                    },
+                  },
+                }}
               />
               <TextField
                 type="time"
                 label="Start Time"
                 InputLabelProps={{ shrink: true }}
                 value={formData.startTime}
-                onChange={(e) =>
-                  setFormData({ ...formData, startTime: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
                 required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px',
+                    '&:hover fieldset': {
+                      borderColor: '#2f27ce',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#2f27ce',
+                    },
+                  },
+                }}
               />
               <TextField
                 type="time"
                 label="End Time"
                 InputLabelProps={{ shrink: true }}
                 value={formData.endTime}
-                onChange={(e) =>
-                  setFormData({ ...formData, endTime: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
                 required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px',
+                    '&:hover fieldset': {
+                      borderColor: '#2f27ce',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#2f27ce',
+                    },
+                  },
+                }}
               />
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-            <Button type="submit" variant="contained" className="bg-primary text-white hover:bg-accent">
+            <Button onClick={() => setOpenDialog(false)} sx={{ color: '#666' }}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                backgroundColor: '#2f27ce',
+                '&:hover': {
+                  backgroundColor: '#433bff',
+                },
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontFamily: 'Poppins',
+                fontWeight: 500,
+              }}
+            >
               Schedule Exam
             </Button>
           </DialogActions>
