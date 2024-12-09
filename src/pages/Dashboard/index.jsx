@@ -34,19 +34,19 @@ export default function Dashboard() {
   const cards = [
     {
       title: "Paper Setters",
-      icon: <SchoolIcon sx={{ fontSize: 40, color: '#433bff' }} />,
+      icon: <SchoolIcon sx={{ fontSize: 40, color: "#433bff" }} />,
       path: "/dashboard/paper-setters",
       description: "Manage paper setters and their submissions",
     },
     {
       title: "Guardians",
-      icon: <SecurityIcon sx={{ fontSize: 40, color: '#433bff' }} />,
+      icon: <SecurityIcon sx={{ fontSize: 40, color: "#433bff" }} />,
       path: "/dashboard/guardians",
       description: "Manage guardians for key sharing",
     },
     {
       title: "Exam Centers",
-      icon: <PeopleIcon sx={{ fontSize: 40, color: '#433bff' }} />,
+      icon: <PeopleIcon sx={{ fontSize: 40, color: "#433bff" }} />,
       path: "/dashboard/exam-centers",
       description: "Manage exam centers and their access",
     },
@@ -119,8 +119,14 @@ export default function Dashboard() {
       setFormData({ date: "", startTime: "", endTime: "" });
       loadCurrentExam();
     } catch (err) {
-      console.log(err);
-      setError(err.message || "Failed to schedule exam");
+      if (err.response.data.message === "Not enough questions in the system") {
+        setError("Not enough questions in the system");
+      } else if (err.response.data.message === "Network error") {
+        setOpenDialog(false);
+        loadCurrentExam();
+      } else {
+        setError(err.message || "Failed to schedule exam");
+      }
       showToast.error(err.message || "Failed to schedule exam");
     } finally {
       setLoadingSchedule(false); // Stop loading after scheduling
@@ -141,7 +147,9 @@ export default function Dashboard() {
             onClick={() => navigate(card.path)}
           >
             <div className="text-accent text-3xl mb-4">{card.icon}</div>
-            <p className="text-xl md:text-2xl font-space-grotesk text-textcolor font-bold mb-2">{card.title}</p>
+            <p className="text-xl md:text-2xl font-space-grotesk text-textcolor font-bold mb-2">
+              {card.title}
+            </p>
             <p className="text-xs text-accent font-light">{card.description}</p>
           </div>
         ))}
@@ -157,15 +165,15 @@ export default function Dashboard() {
               variant="contained"
               startIcon={<EventIcon />}
               sx={{
-                backgroundColor: '#2f27ce',
-                '&:hover': {
-                  backgroundColor: '#433bff',
+                backgroundColor: "#2f27ce",
+                "&:hover": {
+                  backgroundColor: "#433bff",
                 },
-                borderRadius: '8px',
-                textTransform: 'none',
-                fontFamily: 'Poppins',
+                borderRadius: "8px",
+                textTransform: "none",
+                fontFamily: "Poppins",
                 fontWeight: 500,
-                padding: '8px 20px',
+                padding: "8px 20px",
               }}
               onClick={() => setOpenDialog(true)}
               className="w-full md:w-auto"
@@ -178,24 +186,28 @@ export default function Dashboard() {
           <CircularProgress size={24} />
         ) : currentExam ? (
           <div className="mb-3 mt-3">
-              <h2 className="text-lg font-space-grotesk text-textcolor mb-2">Current Exam</h2>
-              <div className="flex justify-between items-center flex-col md:flex-row">
-                <div className="flex flex-col gap-2 w-full mb-8 md:mb-0">
-                  <p>Date: {new Date(currentExam.date).toLocaleDateString()}</p>
-                  <p>Time: {currentExam.startTime} - {currentExam.endTime}</p>
-                  <p>Status: {currentExam.status}</p>
-                </div>
-                <Button
-                  variant="outlined"
-                  onClick={handleDeleteExam}
-                  disabled={currentExam.status === "in-progress"}
-                  className="w-full md:w-auto hover:bg-red-500 hover:text-white flex items-center justify-center"
-                  sx={{ borderColor: 'red', color: 'red' }}
-                >
-                  <Delete/>
-                  <span className="ml-2">Delete Exam</span>
-                </Button>
+            <h2 className="text-lg font-space-grotesk text-textcolor mb-2">
+              Current Exam
+            </h2>
+            <div className="flex justify-between items-center flex-col md:flex-row">
+              <div className="flex flex-col gap-2 w-full mb-8 md:mb-0">
+                <p>Date: {new Date(currentExam.date).toLocaleDateString()}</p>
+                <p>
+                  Time: {currentExam.startTime} - {currentExam.endTime}
+                </p>
+                <p>Status: {currentExam.status}</p>
               </div>
+              <Button
+                variant="outlined"
+                onClick={handleDeleteExam}
+                disabled={currentExam.status === "in-progress"}
+                className="w-full md:w-auto hover:bg-red-500 hover:text-white flex items-center justify-center"
+                sx={{ borderColor: "red", color: "red" }}
+              >
+                <Delete />
+                <span className="ml-2">Delete Exam</span>
+              </Button>
+            </div>
           </div>
         ) : null}
       </div>
@@ -207,7 +219,13 @@ export default function Dashboard() {
         fullWidth
       >
         <form onSubmit={handleScheduleExam}>
-          <DialogTitle sx={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: '#2f27ce' }}>
+          <DialogTitle
+            sx={{
+              fontFamily: "Space Grotesk",
+              fontWeight: 600,
+              color: "#2f27ce",
+            }}
+          >
             Schedule New Exam
           </DialogTitle>
           <DialogContent>
@@ -222,16 +240,18 @@ export default function Dashboard() {
                 label="Exam Date"
                 InputLabelProps={{ shrink: true }}
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
                 required
                 sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    '&:hover fieldset': {
-                      borderColor: '#2f27ce',
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "8px",
+                    "&:hover fieldset": {
+                      borderColor: "#2f27ce",
                     },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#2f27ce',
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#2f27ce",
                     },
                   },
                 }}
@@ -241,16 +261,18 @@ export default function Dashboard() {
                 label="Start Time"
                 InputLabelProps={{ shrink: true }}
                 value={formData.startTime}
-                onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, startTime: e.target.value })
+                }
                 required
                 sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    '&:hover fieldset': {
-                      borderColor: '#2f27ce',
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "8px",
+                    "&:hover fieldset": {
+                      borderColor: "#2f27ce",
                     },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#2f27ce',
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#2f27ce",
                     },
                   },
                 }}
@@ -260,16 +282,18 @@ export default function Dashboard() {
                 label="End Time"
                 InputLabelProps={{ shrink: true }}
                 value={formData.endTime}
-                onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, endTime: e.target.value })
+                }
                 required
                 sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '8px',
-                    '&:hover fieldset': {
-                      borderColor: '#2f27ce',
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "8px",
+                    "&:hover fieldset": {
+                      borderColor: "#2f27ce",
                     },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#2f27ce',
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#2f27ce",
                     },
                   },
                 }}
@@ -277,7 +301,7 @@ export default function Dashboard() {
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpenDialog(false)} sx={{ color: '#666' }}>
+            <Button onClick={() => setOpenDialog(false)} sx={{ color: "#666" }}>
               Cancel
             </Button>
             <Button
@@ -285,17 +309,22 @@ export default function Dashboard() {
               variant="contained"
               disabled={loadingSchedule} // Disable button while loading
               sx={{
-                backgroundColor: '#2f27ce',
-                '&:hover': {
-                  backgroundColor: '#433bff',
+                backgroundColor: "#2f27ce",
+                "&:hover": {
+                  backgroundColor: "#433bff",
                 },
-                borderRadius: '8px',
-                textTransform: 'none',
-                fontFamily: 'Poppins',
+                borderRadius: "8px",
+                textTransform: "none",
+                fontFamily: "Poppins",
                 fontWeight: 500,
               }}
             >
-              {loadingSchedule ? <CircularProgress size={24} color="inherit" /> : "Schedule Exam"} {/* Show loader or text */}
+              {loadingSchedule ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Schedule Exam"
+              )}{" "}
+              {/* Show loader or text */}
             </Button>
           </DialogActions>
         </form>
