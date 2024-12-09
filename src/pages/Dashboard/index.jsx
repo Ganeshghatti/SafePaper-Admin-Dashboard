@@ -29,6 +29,7 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [currentExam, setCurrentExam] = useState(null);
   const [loadingExam, setLoadingExam] = useState(true);
+  const [loadingSchedule, setLoadingSchedule] = useState(false); // New state for scheduling loader
 
   const cards = [
     {
@@ -107,6 +108,7 @@ export default function Dashboard() {
   const handleScheduleExam = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoadingSchedule(true); // Start loading when scheduling
 
     try {
       if (!validateForm()) return;
@@ -117,8 +119,11 @@ export default function Dashboard() {
       setFormData({ date: "", startTime: "", endTime: "" });
       loadCurrentExam();
     } catch (err) {
+      console.log(err);
       setError(err.message || "Failed to schedule exam");
       showToast.error(err.message || "Failed to schedule exam");
+    } finally {
+      setLoadingSchedule(false); // Stop loading after scheduling
     }
   };
 
@@ -278,6 +283,7 @@ export default function Dashboard() {
             <Button
               type="submit"
               variant="contained"
+              disabled={loadingSchedule} // Disable button while loading
               sx={{
                 backgroundColor: '#2f27ce',
                 '&:hover': {
@@ -289,7 +295,7 @@ export default function Dashboard() {
                 fontWeight: 500,
               }}
             >
-              Schedule Exam
+              {loadingSchedule ? <CircularProgress size={24} color="inherit" /> : "Schedule Exam"} {/* Show loader or text */}
             </Button>
           </DialogActions>
         </form>
